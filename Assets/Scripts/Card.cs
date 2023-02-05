@@ -48,11 +48,13 @@ public class Card : MonoBehaviour
             {
                 transform.position = gm.prePos.position;
                 gm.prefix = this;
+                gm.prefixSelected = true;
             }
             else
             {
                 transform.position = gm.suffPos.position;
                 gm.suffix = this;
+                gm.suffixSelected = true;
             }
         }
         else
@@ -60,6 +62,10 @@ public class Card : MonoBehaviour
             transform.position = originalPos.position;
             hasPlayed = false;
             gm.availableSlots[handIdx] = false;
+            if(type == TYPE.PREFIX)
+                gm.prefixSelected = false;
+            else
+                gm.suffixSelected = false;
         }
     }
 

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -15,6 +16,8 @@ public class GameMode : MonoBehaviour
     public Card root;
     public Card prefix;
     public Card suffix;
+    public bool prefixSelected;
+    public bool suffixSelected;
     public bool[] availableSlots;
     public int score;
     public TextMeshPro scoreBoard;
@@ -61,12 +64,21 @@ public class GameMode : MonoBehaviour
                 }
             }
         }
+        else
+        {
+            OnEnd();
+        }
+    }
+
+    void OnEnd()
+    {
+        promptBoard.text = "Yippee! Your score: " + score;
     }
 
     public void OnSubmit()
     {
         string word = "";
-        if (prefix != null)
+        if (prefixSelected)
         {
             score += prefix.points;
             word += prefix.word;
@@ -75,7 +87,7 @@ public class GameMode : MonoBehaviour
         word += root.word;
         score += root.points;
         root.Discard();
-        if (suffix != null)
+        if (suffixSelected)
         {
             score += suffix.points;
             word += suffix.word;
@@ -84,6 +96,8 @@ public class GameMode : MonoBehaviour
         scoreBoard.text = "" + score;
         currentPrompt = currentPrompt.Replace("___", word);
         promptBoard.text = currentPrompt;
+        prefixSelected = false;
+        suffixSelected = false;
         Invoke("NewTurn", 3f);
     }
 
